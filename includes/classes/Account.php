@@ -14,6 +14,7 @@ class Account {
         $this->validateFirstName($fn);
         $this->validateLastName($ln); 
         $this->validateUsername($un);
+        $this->validateEmails($em, $em2);
     }
 
     private function validateFirstName($fn) {
@@ -57,6 +58,11 @@ class Account {
     private function validateEmails($em, $em2) {
         if($em != $em2) {
             array_push($this->errorArray, Constants::$emailsDontMatch);
+            return;
+        }
+
+        if(!filter_var($em, FILTER_VALIDATE_EMAIL)) {
+            array_push($this->errorArray, Constants::$emailInvalid);
         }
     }
  
