@@ -70,3 +70,10 @@ body {
 .column .header span {
     font-size: 14px;
 }
+
+.errorMessage {
+    color: #f00;
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+}

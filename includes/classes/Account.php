@@ -91,7 +91,7 @@ class Account {
     public function getError($error) {
         // Check if the error exists in the error array.
         if(in_array($error, $this->errorArray)) {
-            return $error;
+            return "<span class='errorMessage'>$error</span>";
         }
     }
 }
