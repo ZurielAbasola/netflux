@@ -20,6 +20,7 @@ class FormSanitizer {
     }
 
     // Sanitize the form email to remove any HTML tags,
+    // and remove any spaces.
     public static function sanitizeFormPassword($inputText) {
         $inputText = strip_tags($inputText);
         return $inputText;

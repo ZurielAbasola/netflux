@@ -50,7 +50,7 @@ class Account {
         // Check if the query returned any rows.
         // If it did, then the username already exists.
         if($query->rowCount() != 0) {
-            array_push($this->errorArray, Constants::$usernameTaken)
+            array_push($this->errorArray, Constants::$usernameTaken);
         }
     }
  
