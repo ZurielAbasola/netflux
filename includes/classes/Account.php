@@ -1,14 +1,17 @@
 <?php
 class Account {
-    // Create a private variable to store the connection.
     private $con;
     private $errorArray = array();
 
-    // Create a constructor to receive the connection.
+    // Constructor to receive the connection.
     public function __construct($con) {
         $this->con = $con;
     }
 
+    // Register function to receive the values from the form.
+    // The values are passed as parameters.
+    // The function returns true if the registration was successful.
+    // The function returns false if the registration was unsuccessful.
     public function register($fn, $ln, $un, $em, $em2, $pw, $pw2) {
         // Call the validation methods.
         $this->validateFirstName($fn);
@@ -16,6 +19,32 @@ class Account {
         $this->validateUsername($un);
         $this->validateEmails($em, $em2);
         $this->validatePasswords($pw, $pw2);
+
+        // Check if the error array is empty.
+        if(empty($this->errorArray)) {
+            // Insert into database.
+            return $this->insertUserDetails($fn, $ln, $un, $em, $pw);
+        }
+
+        return false;
+    }
+
+    // Login function to receive the values from the form.
+    // The values are passed as parameters.
+    // The function returns true if the login was successful.
+    // The function returns false if the login was unsuccessful.
+    public function insertUserDetails($fn, $ln, $un, $em, $pw) {
+        $pw = hash("sha512", $pw);
+
+        $query = $this->con->prepare("INSERT INTO users (firstName, lastName, username, email, password)
+                                        VALUES (:fn, :ln, :un, :em, :pw)");
+        $query->bindValue(":fn", $fn); 
+        $query->bindValue(":ln", $ln);
+        $query->bindValue(":un", $un);
+        $query->bindValue(":em", $em);
+        $query->bindValue(":pw", $pw); 
+
+        return $query->execute();
     }
 
     private function validateFirstName($fn) {
