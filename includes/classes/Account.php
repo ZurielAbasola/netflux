@@ -53,6 +53,12 @@ class Account {
             array_push($this->errorArray, Constants::$usernameTaken);
         }
     }
+
+    private function validateEmails($em, $em2) {
+        if($em != $em2) {
+            array_push($this->errorArray, Constants::$emailsDontMatch);
+        }
+    }
  
     public function getError($error) {
         // Check if the error exists in the error array.
