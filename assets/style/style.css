@@ -121,4 +121,14 @@ body {
     border-radius: 2px;
     margin-bottom: 15px;
     margin-right: 5px;
+    cursor: pointer;
+}
+
+button i {
+    color: inherit;
+}
+
+.mainDetails button:hover {
+    background-color: #e6e6e6;
+    color: #000;
 }
