@@ -1,19 +1,28 @@
 <?php
 class CategoryContainers {
-    private $con;
-    private $username;
+    private $con;   // Connection variable.
+    private $username;    // Username variable.
 
+    // Constructor to receive the connection and the username.
+    // The connection and the username are passed as parameters.
+    // The connection and the username are stored in the $con and $username variables.
+    // The constructor is called when a new object is created using this class.
     public function __construct($con, $username) {
-        $this->con = $con;
+        $this->con = $con;  
         $this->username = $username;
     }
 
+    // Function to show all the categories.
+    // The function returns the html.
+    // The function is called when the user is logged in.
     public function showAllCategories() {
-        $query = $this->con->prepare("SELECT * FROM categories");
-        $query->execute();
+        $query = $this->con->prepare("SELECT * FROM categories");   // Prepare the query.
+        $query->execute();      // Execute the query.
 
-        $html = "<div class='previewCategories'>";
+        $html = "<div class='previewCategories'>";  // Initialize the html.
 
+        // Loop through the rows of the query.
+        // Call the getCategoryHtml function.
         while($row = $query->fetch(PDO::FETCH_ASSOC)) {
             $html .= $this->getCategoryHtml($row, null, true, true); 
         }
