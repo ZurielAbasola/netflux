@@ -44,6 +44,11 @@ class Entity {
         $videos = array();
         $currentSeason = null;
         while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+            if($currentSeason != null && &currentSeason != $row["season"]) {
+                $seasons[] = new Season($currentSeason, $videos);
+                $videos = array();
+            }
+            
             $currentSeason = $row["season"];
             $videos[] = new Video($this->con, $row);
         }
