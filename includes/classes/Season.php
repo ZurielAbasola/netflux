@@ -6,5 +6,13 @@ class Season {
         $this->seasonNumber = $seasonNumber;
         $this->videos = $videos;
     }
+
+    public function getSeasonNumber() {
+        return $this->seasonNumber;
+    }
+
+    public function getVideos() {
+        return $this->videos;
+    }
 }
 ?> 
