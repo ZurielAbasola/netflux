@@ -8,7 +8,9 @@ class SeasonProvider {
     }
 
     public function create($entity) {
-        
+        $query = $this->con->prepare("SELECT * FROM videos WHERE entityId=id
+                                        AND isMovie=0
+                                        ORDER BY season, episode ASC");     
     }
 }
 ?>
