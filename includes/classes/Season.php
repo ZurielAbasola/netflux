@@ -1,5 +1,6 @@
 <?php
 class Season {
+
     private $seasonNumber, $videos;
 
     public function __construct($seasonNumber, $videos) {
@@ -14,5 +15,6 @@ class Season {
     public function getVideos() {
         return $this->videos;
     }
+
 }
-?> 
+?>
