@@ -28,6 +28,7 @@ function startHideTimer() {
     })
 }
 
-function initVideo(videoId, username) {
+function initVideo(videoId, userLoggedIn) {
     startHideTimer();
+    
 }
