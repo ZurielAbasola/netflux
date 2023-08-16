@@ -1,28 +1,18 @@
 <?php
 class CategoryContainers {
-    private $con;   // Connection variable.
-    private $username;    // Username variable.
+    private $con; 
+    private $username;   
 
-    // Constructor to receive the connection and the username.
-    // The connection and the username are passed as parameters.
-    // The connection and the username are stored in the $con and $username variables.
-    // The constructor is called when a new object is created using this class.
     public function __construct($con, $username) {
         $this->con = $con;  
         $this->username = $username;
     }
 
-    // Function to show all the categories.
-    // The function returns the html.
-    // The function is called when the user is logged in.
     public function showAllCategories() {
-        $query = $this->con->prepare("SELECT * FROM categories");   // Prepare the query.
-        $query->execute();      // Execute the query.
+        $query = $this->con->prepare("SELECT * FROM categories");   
+        $query->execute();    
+        $html = "<div class='previewCategories'>";  
 
-        $html = "<div class='previewCategories'>";  // Initialize the html.
-
-        // Loop through the rows of the query.
-        // Call the getCategoryHtml function.
         while($row = $query->fetch(PDO::FETCH_ASSOC)) {
             $html .= $this->getCategoryHtml($row, null, true, true); 
         }
@@ -30,15 +20,41 @@ class CategoryContainers {
         return $html . "</div>";
     }
 
+    public function showTVShowCategories() {
+        $query = $this->con->prepare("SELECT * FROM categories"); 
+        $query->execute();  
+
+        $html = "<div class='previewCategories'>
+                    <h1>TV Shows</h1>";  
+
+        while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+            $html .= $this->getCategoryHtml($row, null, true, false); 
+        }
+
+        return $html . "</div>";
+    }
+
+    public function showMovieCategories() {
+        $query = $this->con->prepare("SELECT * FROM categories"); 
+        $query->execute();  
+
+        $html = "<div class='previewCategories'>
+                    <h1>Movie</h1>";  
+
+        while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+            $html .= $this->getCategoryHtml($row, null, false, true); 
+        }
+
+        return $html . "</div>";
+    }
+
     public function showCategory($categoryId, $title = null) {
-        $query = $this->con->prepare("SELECT * FROM categories WHERE id=:id");   // Prepare the query.
-        $query->bindValue(":id", $categoryId);   // Bind the id.
-        $query->execute();      // Execute the query.
+        $query = $this->con->prepare("SELECT * FROM categories WHERE id=:id");  
+        $query->bindValue(":id", $categoryId);  
+        $query->execute();      
 
-        $html = "<div class='previewCategories noScroll'>";  // Initialize the html.
+        $html = "<div class='previewCategories noScroll'>";  
 
-        // Loop through the rows of the query.
-        // Call the getCategoryHtml function.
         while($row = $query->fetch(PDO::FETCH_ASSOC)) {
             $html .= $this->getCategoryHtml($row, $title, true, true); 
         }
@@ -54,10 +70,10 @@ class CategoryContainers {
             $entities = EntityProvider::getEntities($this->con, $categoryId, 30);
         }
         else if($tvShows) {
-            // Get tv show entities
+            $entities = EntityProvider::getTVShowEntities($this->con, $categoryId, 30);
         }
         else {
-            // Get movie entities
+            $entities = EntityProvider::getMoviesEntities($this->con, $categoryId, 30);
         }
 
         if(sizeof($entities) == 0) {
