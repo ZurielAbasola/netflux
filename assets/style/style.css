@@ -298,6 +298,12 @@ button i {
     height: 70px;
     box-sizing: border-box;
     min-width: 1050px;
+    transition: background-color 200ms linear;
+}
+
+.topBar.scrolled {
+    background-color: #141414;
+    transition: background-color 200ms linear;
 }
 
 .logoContainer {
@@ -329,8 +335,3 @@ button i {
     font-size: 20px;
     margin-left: 10px;
 }
-
-.navLinks a:hover {
-    color: #e5e5e5;
-}
-
