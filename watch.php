@@ -18,7 +18,7 @@ $upNextVideo = VideoProvider::getUpNext($con, $video);
     </div>
 
     <div class="videoControls upNext">
-        <button><i class="fas fa-redo"></i></button>
+        <button onclick="restartVideo();"><i class="fas fa-redo"></i></button>
 
         <div class="upNextContainer">
             <h2>Up next:</h2>
@@ -26,8 +26,8 @@ $upNextVideo = VideoProvider::getUpNext($con, $video);
             <h3><?php echo $upNextVideo->getSeasonAndEpisode(); ?></h3>
         </div>
     
-        <button class="playNext">
-            <i class="fas fa-play"></i>
+        <button class="playNext" onclick="watchVideo(<?php echo $upNextVideo->getId(); ?>)">
+            <i class="fas fa-play"></i> Play
         </button>
         
     </div>
