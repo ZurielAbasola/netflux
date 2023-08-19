@@ -2,7 +2,7 @@
 require_once("includes/header.php");
 ?>
 
-<div class="settingContainer column">
+<div class="settingsContainer column">
 
     <div class="formSection">
         <form method="POST">
