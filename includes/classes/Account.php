@@ -20,8 +20,17 @@ class Account {
         $this->validateNewEmail($em, $un);
 
         if(empty($this->errorArray)) {
-            return true;
+            $query = $this->con->prepare("UPDATE users SET firstName=:fn, lastName=:ln, email=:em 
+                                            WHERE username=:un");  // Prepare the query.
+            $query->bindValue(":fn", $fn);      // Bind the first name.
+            $query->bindValue(":ln", $ln);      // Bind the last name.
+            $query->bindValue(":em", $em);      // Bind the email.
+            $query->bindValue(":un", $un);      // Bind the username.
+
+            return $query->execute();       // Execute the query.
         }
+
+        return false;
     }
 
     // Register function to receive the values from the form.
@@ -197,6 +206,16 @@ class Account {
         // If it does, then return the error message.
         if(in_array($error, $this->errorArray)) {
             return "<span class='errorMessage'>$error</span>";
+        }
+    }
+
+    // Get the first error message.
+    // The function returns the first error message.
+    public function getFirstError() {
+        // Check if the error array is not empty.
+        // If it is not empty, then return the first error message.
+        if(!empty($this->errorArray)) {
+            return $this->errorArray[0];
         }
     }
 }
