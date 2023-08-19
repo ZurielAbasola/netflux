@@ -10,6 +10,20 @@ class Account {
         $this->con = $con;
     }
 
+    // Update the user details.
+    // The values are passed as parameters.
+    // The function returns true if the update was successful.
+    // The function returns false if the update was unsuccessful.
+    public function updateDetails($fn, $ln, $em, $un) {
+        $this->validateFirstName($fn); 
+        $this->validateLastName($ln);
+        $this->validateNewEmail($em, $un);
+
+        if(empty($this->errorArray)) {
+            return true;
+        }
+    }
+
     // Register function to receive the values from the form.
     // The values are passed as parameters.
     // The function returns true if the registration was successful.
@@ -139,6 +153,23 @@ class Account {
         // If it did, then the email is already in use.
         if($query->rowCount() != 0) {
             array_push($this->errorArray, Constants::$emailTaken);  // Push the error message into the error array.
+        }
+    }
+
+    private function validateNewEmail($em, $un) {    
+        if(!filter_var($em, FILTER_VALIDATE_EMAIL)) {
+            array_push($this->errorArray, Constants::$emailInvalid);    
+            return;
+        }
+
+        $query = $this->con->prepare("SELECT * FROM users WHERE email=:em AND username != :un");
+        $query->bindValue(":em", $em);
+        $query->bindValue(":un", $un);
+
+        $query->execute();    
+
+        if($query->rowCount() != 0) {
+            array_push($this->errorArray, Constants::$emailTaken); 
         }
     }
 
