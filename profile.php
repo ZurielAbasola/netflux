@@ -4,6 +4,7 @@ require_once("includes/classes/Account.php");
 require_once("includes/classes/FormSanitizer.php");
 require_once("includes/classes/Constants.php");
 require_once("includes/paypalConfig.php");
+require_once("includes/classes/BillingDetails.php");
 
 $detailsMessage = "";
 $passwordMessage = "";
@@ -56,17 +57,21 @@ if (isset($_GET['success']) && $_GET['success'] == 'true') {
     $agreement = new \PayPal\Api\Agreement();
   
     try {
-      // Execute agreement
-      $agreement->execute($token, $apiContext);
+        // Execute agreement
+        $agreement->execute($token, $apiContext);
 
-      // Update user's account status
+        // Get agreement details
+        $result = BillingDetails::insertDetails($con, $agreement, $token, $userLoggedIn);
+        
+        // Update user's subscription status
 
+      
     } catch (PayPal\Exception\PayPalConnectionException $ex) {
-      echo $ex->getCode();
-      echo $ex->getData();
-      die($ex);
+        echo $ex->getCode();
+        echo $ex->getData();
+        die($ex);
     } catch (Exception $ex) {
-      die($ex);
+        die($ex);
     }
   } 
   else if (isset($_GET['success']) && $_GET['success'] == 'false') {
