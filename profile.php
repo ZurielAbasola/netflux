@@ -6,6 +6,8 @@ require_once("includes/classes/Constants.php");
 require_once("includes/paypalConfig.php");
 require_once("includes/classes/BillingDetails.php");
 
+$user = new User($con, $userLoggedIn);
+
 $detailsMessage = "";
 $passwordMessage = "";
 $subscriptionMessage = "";
@@ -55,6 +57,10 @@ if(isset($_POST["savePassowrdButton"])) {
 if (isset($_GET['success']) && $_GET['success'] == 'true') {
     $token = $_GET['token'];
     $agreement = new \PayPal\Api\Agreement();
+
+    $subscriptionMessage = "<div class='alertError'>
+                                Something went wrong!
+                            </div>";
   
     try {
         // Execute agreement
@@ -62,9 +68,13 @@ if (isset($_GET['success']) && $_GET['success'] == 'true') {
 
         // Get agreement details
         $result = BillingDetails::insertDetails($con, $agreement, $token, $userLoggedIn);
-        
-        // Update user's subscription status
+        $result = $result && $user->setIsSubcribed(1);
 
+        if($result) {
+            $subscriptionMessage = "<div class='alertSuccess'>
+                                        You are now subscribed!
+                                    </div>";
+        }
       
     } catch (PayPal\Exception\PayPalConnectionException $ex) {
         echo $ex->getCode();
@@ -90,7 +100,6 @@ if (isset($_GET['success']) && $_GET['success'] == 'true') {
             <h2>User details</h2>
 
             <?php
-            $user = new User($con, $userLoggedIn);
             
             $firstName = isset($_POST["firstName"]) ? $_POST["firstName"] : $user->getFirstName();
             $lastName = isset($_POST["lastName"]) ? $_POST["lastName"] : $user->getLastName();
